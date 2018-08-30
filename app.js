@@ -6,7 +6,7 @@ import {
 	h, render
 } from 'ink'
 import meow from 'meow'
-import UI from './ui'
+import UI from './src/ui'
 
 const app = meow(`
 	Usage

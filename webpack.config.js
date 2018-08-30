@@ -6,6 +6,7 @@ const path = require('path')
 let externals = _externals();
 
 module.exports = {
+	context: path.resolve(__dirname, ''),
 	mode: "development",
 	entry: {
         app: './app.js',
@@ -16,7 +17,7 @@ module.exports = {
         filename: 'app.js'
     },
     resolve: {
-        extensions: ['.js']
+		extensions: ['.js','.json']
     },
 
     externals: externals,
