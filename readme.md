@@ -6,26 +6,15 @@
 ## Install
 
 ```
-$ npm install --global rouboworks
+$ npm install
+$ webpack -p
 ```
 
 
 ## Usage
 
 ```js
-$ rouboworks --help
-
-  Usage
-    rouboworks [input]
-
-  Options
-    --name  Lorem ipsum [Default: false]
-
-  Examples
-    $ rouboworks
-    I love Ink
-    $ rouboworks --name=ponies
-    I love ponies
+$ node ./build/app.js
 ```
 
 
