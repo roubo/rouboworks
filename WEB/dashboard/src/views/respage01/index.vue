@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div style="height: 100%">
-      <button @click="onPlay">复盘</button>
+  <div align="center" style="margin-top: 20px">
+    <div style="width: 90%;">
       <ve-heatmap :data="chartDataMap" :settings="chartSettingsMap" height="600px"/>
+      <button style="margin-top: 10px" @click="onPlay">复盘</button>
     </div>
-    <div>
-      <ve-line :data="chartDataChart" :settings="chartSettingsChart"/>
+    <div style="margin-top: 20px;">
+      <ve-line :data="chartDataChart" :settings="chartSettingsChart" width="90%"/>
     </div>
   </div>
 
@@ -27,7 +27,9 @@ export default {
       type: 'bmap'
     }
     this.chartSettingsChart = {
-      area: true
+      labelMap: {
+        'count': '全市门店数量'
+      },
     }
     return {
       chartDataMap: {
@@ -129,8 +131,6 @@ export default {
       const dateList = this.getDateList('2018_09_13', this.today('_'))
       let index = 0
       const timer = setInterval(() => {
-        console.log(index)
-        console.log(dateList.length)
         this.getLocations(dateList[index], dateList[index])
         this.getCount('2018_09_13', dateList[index])
         index = index + 1
@@ -138,7 +138,7 @@ export default {
           clearInterval(timer)
           return
         }
-      }, 5000)
+      }, 3000)
     }
     // }
   }
