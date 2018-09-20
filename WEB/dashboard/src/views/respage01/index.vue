@@ -1,14 +1,23 @@
 <template>
-  <div align="center" style="margin-top: 20px">
-    <div style="width: 90%;">
-      <ve-heatmap :data="chartDataMap" :settings="chartSettingsMap" height="600px"/>
-      <button style="margin-top: 10px" @click="onPlay">复盘</button>
+  <div style="background: #c0c4cc;">
+    <div style="font-size: 0px">placehold</div>
+    <div class="page header">
+      <el-card>
+        这里显示一排cards
+      </el-card>
     </div>
-    <div style="margin-top: 20px;">
-      <ve-line :data="chartDataChart" :settings="chartSettingsChart" width="90%"/>
+    <div class="page map">
+      <el-card>
+        <ve-heatmap :data="chartDataMap" :settings="chartSettingsMap" height="600px"/>
+      </el-card>
     </div>
+    <div class="page charts">
+      <el-card>
+        <ve-line :data="chartDataChart" :settings="chartSettingsChart" width="90%"/>
+      </el-card>
+    </div>
+    <button style="margin-top: 10px" @click="onPlay">复盘</button>
   </div>
-
 </template>
 
 <script>
@@ -29,7 +38,7 @@ export default {
     this.chartSettingsChart = {
       labelMap: {
         'count': '全市门店数量'
-      },
+      }
     }
     return {
       chartDataMap: {
@@ -146,5 +155,9 @@ export default {
 </script>
 
 <style scoped>
-
+.page {
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
 </style>
