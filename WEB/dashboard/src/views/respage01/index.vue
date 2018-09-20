@@ -2,9 +2,10 @@
   <div style="background: #c0c4cc;">
     <div style="font-size: 0px">placehold</div>
     <div class="page header">
-      <el-card>
-        这里显示一排cards
-      </el-card>
+      <ImageCard :text_count="todayCount.all" :click_me="clickMe" class="header_item" icon_name="respage01_count" text_title="今日门店总数"/>
+      <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_new" text_title="今日新增门店"/>
+      <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_gone" text_title="今日消失门店"/>
+      <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_max" text_title="历史累计总数"/>
     </div>
     <div class="page map">
       <el-card>
@@ -21,7 +22,11 @@
 </template>
 
 <script>
+import ImageCard from '@/components/ImageCard'
 export default {
+  components: {
+    ImageCard
+  },
   data() {
     this.chartSettingsMap = {
       key: 'rL7OMKy4X4aeLCIbg0psT7fjO0z6biwi',
@@ -48,6 +53,11 @@ export default {
       chartDataChart: {
         columns: ['time', 'count'],
         rows: []
+      },
+      todayCount: {
+        all: 0,
+        new: 10,
+        gone: 1
       }
     }
   },
@@ -56,6 +66,7 @@ export default {
     const today = this.today('_')
     this.getLocations(today, today)
     this.getCount('2018_09_13', today)
+    this.getTodayCount()
   },
   methods: {
     /**
@@ -132,7 +143,15 @@ export default {
         }
       })
     },
-
+    getTodayCount: function() {
+      const today = this.today('_')
+      this.rouboapis.getRespage01Info('count', today, today, {
+        success: (res) => {
+          console.log(JSON.stringify(res))
+          this.todayCount.all = res[0].count
+        }
+      })
+    },
     /**
      * 点击复盘按钮事件
      */
@@ -148,8 +167,11 @@ export default {
           return
         }
       }, 3000)
+    },
+
+    clickMe: function() {
+      console.log('clickme')
     }
-    // }
   }
 }
 </script>
@@ -160,4 +182,16 @@ export default {
   margin-left: 30px;
   margin-right: 30px;
 }
+  .header {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .header_item {
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+
 </style>
