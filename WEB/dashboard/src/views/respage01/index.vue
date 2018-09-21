@@ -6,6 +6,7 @@
       <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_new" text_title="今日新增门店"/>
       <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_gone" text_title="今日消失门店"/>
       <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_max" text_title="历史累计总数"/>
+      <ImageCard :text_count="totalDays" :click_me="onPlay" class="header_item" icon_name="respage01_play" text_title="可回放的天数"/>
     </div>
     <div class="page map">
       <el-card>
@@ -17,7 +18,6 @@
         <ve-line :data="chartDataChart" :settings="chartSettingsChart" width="90%"/>
       </el-card>
     </div>
-    <button style="margin-top: 10px" @click="onPlay">复盘</button>
   </div>
 </template>
 
@@ -58,7 +58,8 @@ export default {
         all: 0,
         new: 10,
         gone: 1
-      }
+      },
+      totalDays: 0
     }
   },
   mounted() {
@@ -140,6 +141,7 @@ export default {
       this.rouboapis.getRespage01Info('count', start_time, end_time, {
         success: (res) => {
           this.chartDataChart.rows = res
+          this.totalDays = res.length
         }
       })
     },
