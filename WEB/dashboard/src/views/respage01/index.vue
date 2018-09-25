@@ -2,11 +2,11 @@
   <div style="background: #c0c4cc;">
     <div style="font-size: 0px">placehold</div>
     <div class="page header">
-      <ImageCard :text_count="todayCount.all" :click_me="clickMe" class="header_item" icon_name="respage01_count" text_title="今日门店总数"/>
-      <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_new" text_title="今日新增门店"/>
-      <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_gone" text_title="今日消失门店"/>
-      <ImageCard :text_count="10" :click_me="clickMe" class="header_item" icon_name="respage01_max" text_title="历史累计总数"/>
-      <ImageCard :text_count="totalDays" :click_me="onPlay" class="header_item" icon_name="respage01_play" text_title="可回放的天数"/>
+      <ImageCard :text_count="todayCount.all" class="header_item" icon_name="respage01_count" text_title="今日门店总数" @click_me="clickMe('all')"/>
+      <ImageCard :text_count="todayCount.new" class="header_item" icon_name="respage01_new" text_title="今日新增门店" @click_me="clickMe('new')"/>
+      <ImageCard :text_count="todayCount.gone" class="header_item" icon_name="respage01_gone" text_title="今日消失门店" @click_me="clickMe('gone')"/>
+      <ImageCard :text_count="todayCount.union" class="header_item" icon_name="respage01_max" text_title="历史累计总数" @click_me="clickMe('union')"/>
+      <ImageCard :text_count="totalDays" :text_title="playTextTitle" class="header_item" icon_name="respage01_play" @click_me="onPlay"/>
     </div>
     <div class="page map">
       <el-card>
@@ -35,7 +35,7 @@ export default {
         zoom: 14,
         roam: true,
         mapStyle: {
-          style: 'midnight'
+          style: 'dark'
         }
       },
       type: 'bmap'
@@ -56,10 +56,16 @@ export default {
       },
       todayCount: {
         all: 0,
-        new: 10,
-        gone: 1
+        union: 0,
+        new: 0,
+        gone: 0
       },
-      totalDays: 0
+      unionList: [],
+      newList: [],
+      goneList: [],
+      allList: [],
+      totalDays: 0,
+      playTextTitle: '可回放的天数'
     }
   },
   mounted() {
@@ -68,6 +74,7 @@ export default {
     this.getLocations(today, today)
     this.getCount('2018_09_13', today)
     this.getTodayCount()
+    this.getTodayStat()
   },
   methods: {
     /**
@@ -126,6 +133,7 @@ export default {
       this.rouboapis.getRespage01Info('location', start_time, end_time, {
         success: (res) => {
           this.chartDataMap.rows = res
+          this.allList = res
         },
         fail: (err) => {
           console.log(err)
@@ -154,25 +162,54 @@ export default {
         }
       })
     },
+    getTodayStat: function() {
+      const today = this.today('_')
+      this.rouboapis.getRespage01Info('stat', today, today, {
+        success: (res) => {
+          this.todayCount.union = res.union.length
+          this.unionList = res.union
+          this.todayCount.new = res.new.length
+          this.newList = res.new
+          this.todayCount.gone = res.gone.length
+          this.goneList = res.gone
+        }
+      })
+    },
+
     /**
      * 点击复盘按钮事件
      */
     onPlay: function() {
       const dateList = this.getDateList('2018_09_13', this.today('_'))
       let index = 0
+      this.playTextTitle = '正在回看...'
       const timer = setInterval(() => {
         this.getLocations(dateList[index], dateList[index])
         this.getCount('2018_09_13', dateList[index])
         index = index + 1
         if (index >= dateList.length) {
+          this.playTextTitle = '可回看的天数'
           clearInterval(timer)
           return
         }
       }, 3000)
     },
 
-    clickMe: function() {
-      console.log('clickme')
+    clickMe: function(who) {
+      switch (who) {
+        case 'new':
+          this.chartDataMap.rows = this.newList
+          break
+        case 'gone':
+          this.chartDataMap.rows = this.goneList
+          break
+        case 'union':
+          this.chartDataMap.rows = this.unionList
+          break
+        case 'all':
+          this.chartDataMap.rows = this.allList
+          break
+      }
     }
   }
 }

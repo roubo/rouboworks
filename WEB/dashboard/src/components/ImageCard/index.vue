@@ -7,7 +7,7 @@
         </div>
         <div class="item">
           <div class="text_title">{{ text_title }}</div>
-          <Count_to :start-val="0" :end-val="text_count" :duration="3000" class="text_count" />
+          <Count_to :start-val="0" :end-val="text_count" :duration="2000" class="text_count" />
         </div>
       </div>
     </el-card>
@@ -22,13 +22,13 @@ export default {
     Count_to
   },
   props: {
-    click_me: {
-      type: Function,
-      require: false,
-      default: function() {
-        return
-      }
-    },
+    // click_me: {
+    //   type: Function,
+    //   require: false,
+    //   default: function() {
+    //     return
+    //   }
+    // },
     /**
      * card 的样式
      */
@@ -77,6 +77,11 @@ export default {
       type: Number,
       require: true,
       default: 0
+    }
+  },
+  methods: {
+    click_me: function() {
+      this.$emit('click_me')
     }
   }
 }
