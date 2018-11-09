@@ -57,7 +57,8 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/',
+    assetsPublicPath: 'https://app.airoubo.com/app/dashboard/',
+    // assetsPublicPath: '/',
 
     /**
      * Source Maps

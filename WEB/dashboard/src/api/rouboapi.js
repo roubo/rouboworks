@@ -20,8 +20,28 @@ const getRespage01Info = (type, start_time, end_time, callback) => {
   })
 }
 
+/**
+ * 获取respage02相关的数据
+ * @param type
+ * @param day
+ * @param time
+ * @param callback
+ */
+const getRespage02Info = (type, day, time, callback) => {
+  const args = new tools.BaseArgument()
+  args.setArgument('type', type)
+  args.setArgument('day', day)
+  args.setArgument('time', time)
+  axios.get('v1/respage02' + args.arguments).then(res => {
+    callback.success(res.data)
+  }).catch(err => {
+    callback.fail(err)
+  })
+}
+
 const rouboapis = {
-  getRespage01Info
+  getRespage01Info,
+  getRespage02Info
 }
 
 export default rouboapis

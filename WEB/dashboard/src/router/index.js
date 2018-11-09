@@ -56,6 +56,12 @@ export const constantRouterMap = [
         name: 'Respage01',
         component: () => import('@/views/respage01/index'),
         meta: { title: '金华教育培训市场准实时数据', icon: 'train' }
+      },
+      {
+        path: 'respage02',
+        name: 'Respage02',
+        component: () => import('@/views/respage02/index'),
+        meta: { title: '金华共享单车分布准实时数据', icon: 'sharebike' }
       }
     ]
   },
